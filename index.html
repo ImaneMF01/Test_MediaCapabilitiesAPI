@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Test Media Capabilities</title>
+	<meta charset="UTF-8">
+</head>
+<body>
+
+Test Media Capabilities
+<script type="text/javascript">
+	//colorGamut: "rec2020",
+//transferFunction: "pq",
+
+if ("mediaCapabilities" in navigator) {
+      console.log('available')
+    } else {
+      console.log('NOT available')
+    };
+
+
+///////////video/mp4; codecs="hvc1.1.6.L63.B0" | Level 2.1, up to 640x360@30 and 3000 kbit/s 
+//Up to: 128 x96@300, 176 x144@200, 320x240@90, 352x240@75, 352x288@60, 352x480@37.5, 352x576@33.3, 640x360@30.
+
+    let configuration = [
+    { 
+    	//video/mp4; codecs="hvc1.1.6.L63.B0" | 128 x96@300
+    	type: 'media-source',
+        video: {
+            contentType: 'video/mp4; codecs=hvc1.1.6.L63.B0',
+            width: 128,
+            height: 96,
+            bitrate: 3000,
+            framerate: 300,
+            ColorGamut:'rec2020'
+        }
+    },
+
+    {
+    	//video/mp4; codecs="hvc1.1.6.L63.B0" | 176 x144@200
+    type: 'media-source',
+        video: {
+            contentType: 'video/mp4; codecs=hvc1.1.6.L63.B0',
+            width: 176,
+            height: 144,
+            bitrate: 3000,
+            framerate: 200,
+            ColorGamut:'rec2020'
+        }
+    },
+
+    { 
+    	//video/mp4; codecs="vp8" | 1920x1080@500
+    type: 'media-source',
+        video: {
+            contentType: 'video/webm; codecs=vp8',
+            width: 1920,
+            height: 1080,
+            bitrate: 5000,
+            framerate: 50,
+            ColorGamut: 'rec2020'
+        }
+    },
+
+    { 
+    	//video/mp4; codecs="vp09.00.50.08" | 1920x1080@500
+    type: 'media-source',
+        video: {
+            contentType: 'video/webm; codecs=vp09.00.50.08',
+            width: 640,
+            height: 360,
+            bitrate: 2000,
+            framerate: 29.97,
+            ColorGamut: 'rec2020'
+        }
+    },
+
+//////////////Config from Chris Manifest
+
+   {
+
+    type: 'media-source',
+        video: {
+            contentType: 'video/mp4; codecs=avc3.640028',
+            width: 1920,
+            height: 1080,
+            bitrate: 128000,
+            framerate: 25,
+            colorGamut: "hhh",
+            transferFunction: "hlg"
+        }
+    	
+    },
+
+     {
+    type: 'media-source',
+        video: {
+            contentType: 'video/mp4; codecs=avc3.4d4015',
+            width: 512,
+            height: 288,
+            bitrate: 2000,
+            framerate: 25,
+            colorGamut: 'rec2020',
+            transferFunction: 'hlg'
+
+    }
+
+    },
+
+    {
+    type: 'media-source',
+        video: {
+            contentType: 'video/mp4; codecs=avc3.640020',
+            width: 1280,
+            height: 720,
+            bitrate: 2000,
+            framerate: 25,
+            colorGamut: 'rec2020',
+            transferFunction: 'hlg'
+
+    }
+
+    }, 
+
+    ]
+
+    for (const conf in configuration)
+    {
+
+        navigator.mediaCapabilities.decodingInfo(configuration[conf])
+        .then((result) => {
+         
+         console.log('****type inside loop  ::::   ' + configuration[conf].video.contentType);
+
+          console.log('Decoding of ' + configuration[conf].video.contentType + ' is'
+            + (result.supported ? '' : ' NOT') + ' supported --- '
+            + (result.smooth ? '' : ' NOT') + ' smooth --- '
+            + (result.powerEfficient ? '' : ' NOT') + ' power efficient --- '
+            //+ (result.rec2020 ? '' : ' NOT') + ' rec2020 --- '
+            //+ (result.hlg ? '' : ' NOT') + ' HLG --- '
+            + configuration[conf].video.colorGamut + ' '
+            + configuration[conf].video.transferFunction + ' '
+          //  + (result.configuration[conf].video.colorGamut ? '' : ' NOT') + ' rec2020 --- '
+
+            );
+        })
+        .catch((err) => {
+          console.error(err, ' caused decodingInfo to reject');
+        });
+
+    }
+
+</script>
+
+
+
+</body>
+
+</html>
+
